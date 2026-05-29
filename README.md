@@ -37,6 +37,8 @@ longlostforgotten/
 
 No JavaScript dependencies. All animation is CSS. Fonts load from Bunny Fonts — no Google Fonts.
 
+The "Long Lost" headline uses an inline SVG `feTurbulence` filter for a fine speckled grain/grunge effect. See `SITE-BRIEF.md` for filter values and tuning notes.
+
 ---
 
 ## Full Site Build (future)

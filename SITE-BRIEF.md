@@ -74,6 +74,30 @@ Animations should be slow and atmospheric — pulse, drift, flicker. Nothing fra
 
 ---
 
+## Grunge Filter
+
+The "Long Lost" headline uses an SVG `feTurbulence` filter for a fine speckled grain effect — like a screen print or slightly rough ink surface. Letterforms remain fully intact; only the fill texture is affected.
+
+```xml
+<filter id="grunge" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.55 0.45" numOctaves="4" seed="15" result="noise"></feTurbulence>
+  <feColorMatrix type="matrix" values="0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 17 -4.5" in="noise" result="speckle"></feColorMatrix>
+  <feComposite in="SourceGraphic" in2="speckle" operator="in"></feComposite>
+</filter>
+```
+
+Applied via CSS: `filter: url(#grunge)` on `.long-lost`. The SVG filter is defined in a zero-size `<svg>` in the page body.
+
+Tuning notes:
+- `baseFrequency` — lower = larger patches, higher = finer grain
+- `seed` — changes the noise pattern without affecting density
+- The `feColorMatrix` fourth row last two values (`17` and `-4.5`) control density: raise the multiplier or bring the offset closer to 0 for more speckle; lower multiplier or push offset more negative for less
+
+---
+
 ## Coming Soon Page
 
 **File:** `index.html`  
