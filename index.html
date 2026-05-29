@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)file:///Users/chromia/Downloads/index_4.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>longlostforgotten.com</title>
+<link rel="preconnect" href="https://fonts.bunny.net/">
+<link href="./index_files/css" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink:       #fb66a4;
+    --pink-dim:   rgba(251, 102, 164, 0.35);
+    --pink-ghost: rgba(251, 102, 164, 0.08);
+    --sand:       #c8c88d;
+    --sand-dim:   rgba(200, 200, 141, 0.45);
+    --sand-ghost: rgba(200, 200, 141, 0.12);
+    --teal:       #4a8fa0;
+    --teal-dim:   rgba(74, 143, 160, 0.4);
+    --teal-ghost: rgba(74, 143, 160, 0.1);
+    --ink:        #251B1E;
+    --line:       rgba(200, 200, 141, 0.14);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #251B1E;
+    background: radial-gradient(circle, rgba(37,27,30,1) 0%, rgba(19,99,128,1) 69%, rgba(200,200,141,1) 100%);
+    font-family: 'Josefin Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  /* scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.14) 2px,
+      rgba(0,0,0,0.14) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+    animation: scanDrift 14s linear infinite;
+  }
+
+  /* vignette */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  /* noise */
+  #noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 98;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    animation: noiseShift 0.4s steps(1) infinite;
+  }
+
+  /* deco geometry */
+  #deco {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    animation: decoBreath 12s ease-in-out infinite;
+  }
+
+  main {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  /* signal bar */
+  .signal-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--teal-dim) 20%,
+      var(--teal) 50%,
+      var(--teal-dim) 80%,
+      transparent 100%
+    );
+    z-index: 20;
+    animation: signalPulse 5s ease-in-out infinite;
+  }
+
+  /* transmission label */
+  .transmission {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.32em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.6s;
+  }
+
+  .blink { animation: blink 1.1s step-end infinite; }
+
+  /* rule */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1s;
+  }
+
+  .rule::before,
+  .rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .diamond {
+    width: 4px; height: 4px;
+    background: var(--sand-dim);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* headline block */
+  .headline-wrap {
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.3s;
+    text-align: center;
+    margin: 1.6rem 0 0.4rem;
+  }
+
+  .long-lost {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 14vw, 9rem);
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 0.92;
+    animation: textFlicker 9s ease-in-out infinite 3s;
+  }
+
+  .sub-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+    color: var(--sand-dim);
+    letter-spacing: 0.22em;
+    text-transform: lowercase;
+    margin-top: 1rem;
+  }
+
+  /* bottom rule */
+  .rule-bottom {
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.8s;
+    margin-top: 1.6rem;
+  }
+
+  /* domain stamp */
+  .domain-stamp {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.38em;
+    color: rgba(74,143,160,0.8);
+    text-transform: lowercase;
+    margin-top: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 2.2s;
+  }
+
+  /* status line */
+  .status {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    color: rgba(200,200,141,0.8);
+    z-index: 20;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 3s;
+  }
+
+  /* corner ornaments */
+  .corner {
+    position: fixed;
+    z-index: 15;
+    width: 30px; height: 30px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 2.6s;
+  }
+  .corner--tl { top: 1.4rem; left: 1.4rem; }
+  .corner--tr { top: 1.4rem; right: 1.4rem; transform: scaleX(-1); }
+  .corner--bl { bottom: 1.4rem; left: 1.4rem; transform: scaleY(-1); }
+  .corner--br { bottom: 1.4rem; right: 1.4rem; transform: scale(-1,-1); }
+
+  /* animations */
+  @keyframes scanDrift {
+    from { background-position: 0 0; }
+    to   { background-position: 0 100px; }
+  }
+  @keyframes noiseShift {
+    0%   { background-position: 0 0; }
+    25%  { background-position: 16px 8px; }
+    50%  { background-position: 8px 16px; }
+    75%  { background-position: 24px 4px; }
+    100% { background-position: 0 0; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes signalPulse {
+    0%, 100% { opacity: 0.25; }
+    50%       { opacity: 1; }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  @keyframes textFlicker {
+    0%, 96%, 100% { opacity: 1; }
+    97%            { opacity: 0.55; }
+    98%            { opacity: 1; }
+    99%            { opacity: 0.35; }
+    99.5%          { opacity: 1; }
+  }
+  @keyframes decoBreath {
+    0%, 100% { opacity: 0.22; }
+    50%       { opacity: 0.13; }
+  }
+
+  @media (max-width: 480px) {
+    .corner { width: 20px; height: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="noise"></div>
+
+<svg id="deco" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:1;">
+  <rect x="36" y="36" width="1368" height="828" fill="none" stroke="#c8c88d" stroke-width="0.6" opacity="0.5"></rect>
+  <rect x="48" y="48" width="1344" height="804" fill="none" stroke="#c8c88d" stroke-width="0.3" opacity="0.25"></rect>
+  <g opacity="0.18" stroke="#c8c88d" stroke-width="0.4">
+    <line x1="720" y1="450" x2="720" y2="36"></line>
+    <line x1="720" y1="450" x2="720" y2="864"></line>
+    <line x1="720" y1="450" x2="36" y2="450"></line>
+    <line x1="720" y1="450" x2="1404" y2="450"></line>
+    <line x1="720" y1="450" x2="180" y2="90"></line>
+    <line x1="720" y1="450" x2="1260" y2="90"></line>
+    <line x1="720" y1="450" x2="180" y2="810"></line>
+    <line x1="720" y1="450" x2="1260" y2="810"></line>
+    <line x1="720" y1="450" x2="36" y2="240"></line>
+    <line x1="720" y1="450" x2="1404" y2="240"></line>
+    <line x1="720" y1="450" x2="36" y2="660"></line>
+    <line x1="720" y1="450" x2="1404" y2="660"></line>
+  </g>
+  <g transform="translate(720,450)" opacity="0.45">
+    <rect x="-55" y="-55" width="110" height="110" fill="none" stroke="#c8c88d" stroke-width="0.5" transform="rotate(45)"></rect>
+    <rect x="-38" y="-38" width="76" height="76" fill="none" stroke="#c8c88d" stroke-width="0.3" transform="rotate(45)"></rect>
+    <rect x="-20" y="-20" width="40" height="40" fill="none" stroke="#4a8fa0" stroke-width="0.4" transform="rotate(45)" opacity="0.7"></rect>
+    <line x1="-55" y1="0" x2="55" y2="0" stroke="#c8c88d" stroke-width="0.3" opacity="0.4"></line>
+    <line x1="0" y1="-55" x2="0" y2="55" stroke="#c8c88d" stroke-width="0.3" opacity="0.4"></line>
+  </g>
+  <g stroke="#c8c88d" stroke-width="0.6" fill="none" opacity="0.55">
+    <polyline points="76,76 76,136 136,136"></polyline>
+    <polyline points="84,84 84,128 128,128"></polyline>
+    <polyline points="1364,76 1364,136 1304,136"></polyline>
+    <polyline points="1356,84 1356,128 1312,128"></polyline>
+    <polyline points="76,824 76,764 136,764"></polyline>
+    <polyline points="84,816 84,772 128,772"></polyline>
+    <polyline points="1364,824 1364,764 1304,764"></polyline>
+    <polyline points="1356,816 1356,772 1312,772"></polyline>
+  </g>
+  <line x1="136" y1="450" x2="580" y2="450" stroke="#c8c88d" stroke-width="0.4" opacity="0.22"></line>
+  <line x1="860" y1="450" x2="1304" y2="450" stroke="#c8c88d" stroke-width="0.4" opacity="0.22"></line>
+  <ellipse cx="720" cy="450" rx="300" ry="185" fill="none" stroke="rgba(251,102,164,0.12)" stroke-width="0.6"></ellipse>
+</svg>
+
+<div class="signal-bar" aria-hidden="true"></div>
+
+<svg class="corner corner--tl" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <polyline points="3,27 3,3 27,3" stroke="#4a8fa0" stroke-width="1.2"></polyline>
+  <polyline points="7,23 7,7 23,7" stroke="#4a8fa0" stroke-width="0.4" opacity="0.5"></polyline>
+</svg>
+<svg class="corner corner--tr" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <polyline points="3,27 3,3 27,3" stroke="#4a8fa0" stroke-width="1.2"></polyline>
+  <polyline points="7,23 7,7 23,7" stroke="#4a8fa0" stroke-width="0.4" opacity="0.5"></polyline>
+</svg>
+<svg class="corner corner--bl" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <polyline points="3,27 3,3 27,3" stroke="#4a8fa0" stroke-width="1.2"></polyline>
+  <polyline points="7,23 7,7 23,7" stroke="#4a8fa0" stroke-width="0.4" opacity="0.5"></polyline>
+</svg>
+<svg class="corner corner--br" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <polyline points="3,27 3,3 27,3" stroke="#4a8fa0" stroke-width="1.2"></polyline>
+  <polyline points="7,23 7,7 23,7" stroke="#4a8fa0" stroke-width="0.4" opacity="0.5"></polyline>
+</svg>
+
+<main>
+  <p class="transmission">— transmission recovered &nbsp;<span class="blink">█</span></p>
+
+  <div class="rule" aria-hidden="true">
+    <div class="diamond"></div>
+    <div class="diamond"></div>
+    <div class="diamond"></div>
+  </div>
+
+  <div class="headline-wrap">
+    <h1 class="long-lost">Long Lost</h1>
+    <p class="sub-title">the terrible inconvenience of</p>
+  </div>
+
+  <div class="rule rule-bottom" aria-hidden="true">
+    <div class="diamond"></div>
+    <div class="diamond"></div>
+    <div class="diamond"></div>
+  </div>
+
+  <p class="domain-stamp">signal pending &nbsp;/&nbsp; stand by</p>
+</main>
+
+<p class="status">STA-7 &nbsp;·&nbsp; FREQ: 47.223 &nbsp;·&nbsp; CARRIER LOST &nbsp;·&nbsp; SEEKING…</p>
+
+
+
+</body></html>
